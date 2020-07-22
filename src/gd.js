@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const dayjs = require('dayjs')
 const prompts = require('prompts')
+const prompt = require('prompt')
 const pLimit = require('p-limit')
 const axios = require('@viegg/axios')
 const { GoogleToken } = require('gtoken')
@@ -427,7 +428,7 @@ async function get_info_by_id (fid, use_sa) {
   return data
 }
 
-async function user_choose () {
+async function _neveruse_user_choose () {
   const answer = await prompts({
     type: 'select',
     name: 'value',
@@ -440,6 +441,23 @@ async function user_choose () {
     initial: 0
   })
   return answer.value
+}
+
+async function user_choose () {
+  const property = {
+    name: 'answer',
+    message: 'found same task before, what to do?\n(1) continue\n(2) restart\n(3) exit\n',
+    validator: word => [1, 2, 3].includes(Number(word)),
+    warning: 'Must enter 1/2/3',
+    default: 1
+  }
+  const choices = ['', 'continue', 'restart', 'exit']
+  return new Promise((resolve, reject) => {
+    prompt.get(property, function (err, result) {
+      if (err) return reject(err)
+      resolve(choices[result.answer])
+    })
+  })
 }
 
 async function copy ({ source, target, name, min_size, update, not_teamdrive, service_account, dncnr, is_server }) {
@@ -739,7 +757,7 @@ function find_dupe (arr) {
   return dupe_files.concat(dupe_empty_folders)
 }
 
-async function confirm_dedupe ({ file_number, folder_number }) {
+async function _neveruse_confirm_dedupe ({ file_number, folder_number }) {
   const answer = await prompts({
     type: 'select',
     name: 'value',
@@ -751,6 +769,20 @@ async function confirm_dedupe ({ file_number, folder_number }) {
     initial: 0
   })
   return answer.value
+}
+
+function confirm_dedupe ({ file_number, folder_number }) {
+  const property = {
+    name: 'answer',
+    message: `检测到同位置下重复文件${file_number}个，重复空目录${folder_number}个，是否删除？(yes/no)`,
+    default: 'yes'
+  }
+  return new Promise((resolve, reject) => {
+    prompt.get(property, function (err, result) {
+      if (err) return reject(err)
+      resolve(result.answer)
+    })
+  })
 }
 
 // 需要sa是源文件夹所在盘的manager

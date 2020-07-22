@@ -446,7 +446,7 @@ async function _neveruse_user_choose () {
 async function user_choose () {
   const property = {
     name: 'answer',
-    message: 'found same task before, what to do?\n(1) continue\n(2) restart\n(3) exit\n',
+    message: '检测到上次的复制记录，是否继续？\n(1) continue\n(2) restart\n(3) exit\n',
     validator: word => [1, 2, 3].includes(Number(word)),
     warning: 'Must enter 1/2/3',
     default: 1

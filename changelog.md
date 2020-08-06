@@ -1,6 +1,26 @@
 ## 更新日志
 > 更新方法：在 gd-utils 目录下，执行 `git pull` 拉取最新代码，如果你使用了 pm2 守护进程，执行`pm2 reload server`刷新生效。
 
+### [2020-08-05]
+- 配合[gdshare](https://github.com/iwestlin/gdshare)使用，给 [aria2.js](./aria2.js) 添加 `--hashkey` `--cf` `--expire` 选项，具体含义请执行 `./aria2.js -h` 查看。  
+使用示例：
+```bash
+./aria2.js folderID -k 'your hashkey' -c 'your.domain.com' -S
+```
+这条命令会在当前目录生成一个包含所有文件下载链接的文本文件并输出一条以 `aria2c` 开头的命令，执行这条命令即可调用[aria2c](https://aria2.github.io/)下载整个`folderID`目录，并保留目录结构。
+
+### [2020-08-02] 关于“没有可用的SA”报错信息
+- 最近Google Drive的 API 似乎有点抽风，转存新分享的资源时经常随机遇到`userRateLimitExceeded`（一般这种错误只会在SA用完每日转存流量750G时触发）的接口返回错误导致SA被剔除（即使是新加的SA也会遇到），而对于比较老的分享或者自己团队盘文件对拷则没问题。  
+不得已我只好修改了一下程序的逻辑，只有当SA连续两次遇到`userRateLimitExceeded`的错误时才会被剔除，在这种条件下，据我的观察，拷贝一个新分享的资源时，平均每转存100个文件会被剔除掉一个SA。  
+如果你不希望因为接口返回`userRateLimitExceeded`而剔除掉对应的SA，可以手动修改代码，方法见：https://github.com/iwestlin/gd-utils/issues/138#issuecomment-666156273
+- 命令行添加 `--dncf` 参数，表示`do not copy folders`，即转存资源时不复制任何递归子目录，直接将所有文件拷贝到新生成的文件夹中。
+
+[2020-07-28]  
+- 添加 [aria2.js](https://github.com/iwestlin/gd-utils/blob/master/aria2.js) 脚本，方便利用 `aria2c` 下载google drive目录，使用帮助可执行 `./aria2.js -h` 查看。
+
+相关 issue: [https://github.com/iwestlin/gd-utils/issues/133](https://github.com/iwestlin/gd-utils/issues/133)  
+使用录屏：[https://drive.google.com/file/d/1lzN7R9Klw66C5UttUUDN3_EsN3pNs62q/view](https://drive.google.com/file/d/1lzN7R9Klw66C5UttUUDN3_EsN3pNs62q/view)
+
 [2020-07-21]  
 - 添加数据库clear脚本，只需在`gd-utils`目录下执行`node clear-db.js`就可以删除所有获取的文件信息（但会保留拷贝记录和bookmark）同时减小数据库文件大小了
 - 调整提取分享链接的方法，基本能够识别所有类型消息中的分享ID

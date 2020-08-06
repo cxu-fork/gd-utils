@@ -649,6 +649,7 @@ async function copy_file (id, parent, use_sa, limit, task_id) {
     }
     try {
       const { data } = await axins.post(url, { parents: [parent] }, config)
+      gtoken.flaged = false
       return data
     } catch (err) {
       retry++
@@ -661,9 +662,14 @@ async function copy_file (id, parent, use_sa, limit, task_id) {
         throw new Error(FILE_EXCEED_MSG)
       }
       if (use_sa && message && message.toLowerCase().includes('rate limit')) {
-        SA_TOKENS = SA_TOKENS.filter(v => v.gtoken !== gtoken)
-        if (!SA_TOKENS.length) SA_TOKENS = get_sa_batch()
-        console.log('此帐号触发使用限额，剩余可用service account帐号数量：', SA_TOKENS.length)
+        if (gtoken.flaged) {
+          SA_TOKENS = SA_TOKENS.filter(v => v.gtoken !== gtoken)
+          if (!SA_TOKENS.length) SA_TOKENS = get_sa_batch()
+          console.log('此帐号连续两次触发使用限额，剩余可用SA数量：', SA_TOKENS.length)
+        } else {
+          console.log('此帐号触发使用限额，已标记，若下次请求正常则解除标记，否则剔除此SA')
+          gtoken.flaged = true
+        }
       }
     }
   }
@@ -677,6 +683,7 @@ async function copy_file (id, parent, use_sa, limit, task_id) {
 }
 
 async function create_folders ({ source, old_mapping, folders, root, task_id, service_account }) {
+  if (argv.dncf) return {} // do not copy folders
   if (!Array.isArray(folders)) throw new Error('folders must be Array:' + folders)
   const mapping = old_mapping || {}
   mapping[source] = root
@@ -882,4 +889,4 @@ function print_progress (msg) {
   }
 }
 
-module.exports = { ls_folder, count, validate_fid, copy, dedupe, copy_file, gen_count_body, real_copy, get_name_by_id, get_info_by_id }
+module.exports = { ls_folder, count, validate_fid, copy, dedupe, copy_file, gen_count_body, real_copy, get_name_by_id, get_info_by_id, get_access_token, get_sa_token, walk_and_save }

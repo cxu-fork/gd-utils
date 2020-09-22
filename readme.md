@@ -29,7 +29,8 @@
 [https://drive.google.com/drive/folders/124pjM5LggSuwI1n40bcD5tQ13wS0M6wg](https://drive.google.com/drive/folders/124pjM5LggSuwI1n40bcD5tQ13wS0M6wg)
 
 ## English Version (thanks to [@roshanconnor123](https://github.com/roshanconnor123))
-[https://github.com/roshanconnor123/gd-utils](https://github.com/roshanconnor123/gd-utils)
+- [roshanconnor123/gd-utils](https://github.com/roshanconnor123/gd-utils)
+- [roshanconnor123/Gdutils_Tgbot](https://github.com/roshanconnor123/Gdutils_Tgbot)
 
 ## 无需域名和nginx版
 > 此版本无需域名和web服务即可使用tg机器人，大大简化了配置过程，感谢贡献者 [@dissipator](https://github.com/dissipator)
@@ -123,6 +124,10 @@ colab使用录屏：[https://drive.google.com/drive/folders/19T37ARH7M1h67JGYanK
 http_proxy="YOUR_PROXY_URL" && https_proxy=$http_proxy && HTTP_PROXY=$http_proxy && HTTPS_PROXY=$http_proxy
 ```
 请把`YOUR_PROXY_URL`替换成你自己的代理地址
+
+## 其他环境
+nodejs本身是跨平台的，所以项目可以在各种操作系统上运行，下面的说明是针对Linux系统，如果你需要在 Windows 或 Android 上进行安装，可以参考：
+[https://github.com/roshanconnor123/gd-utils#installation (英文)](https://github.com/roshanconnor123/gd-utils#installation)
 
 ## 依赖安装
 - 命令行执行`git clone https://github.com/iwestlin/gd-utils && cd gd-utils` 克隆并切换到本项目文件夹下

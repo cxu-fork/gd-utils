@@ -1,6 +1,21 @@
 ## 更新日志
 > 更新方法：在 gd-utils 目录下，执行 `git pull` 拉取最新代码，如果你使用了 pm2 守护进程，执行`pm2 reload server`刷新生效。
 
+### [2020-08-28]
+- 如果统计表格长度超出telegram消息限制，只显示前20行记录（之前是显示概要）
+- 当用机器人统计目录数比较多的链接时，10秒后返回进度详情，且之后每隔10秒更新一次进度信息。
+
+### [2020-08-13]
+- 给命令行 `./count` 添加 [snap2html](https://github.com/rlv-dan/Snap2HTML) 的导出方式，示例用法：
+```bash
+./count folderID -S -t snap -o example.html
+```
+导出html示例：[example.html](https://code.viegg.com/single/snap2html-example.html)
+源文件夹链接：[999](https://drive.google.com/drive/folders/1A35MT6auEHASo3egpZ3VINMOwvA47cJG)
+
+### [2020-08-08]
+- 给机器人添加 `/reload` 指令，表示重启进程，中断所有进行中的任务(前提是进程由pm2守护)
+
 ### [2020-08-06]
 - 由于最近`userRateLimitExceeded`的错误越来越频繁出现，看上去Google除了每日750G以外又加上了什么限制。我只好把剔除SA的条件从“连续2次”遇到这种报错消息改成了**连续7次**……这个值也可以自定义，只需要在`config.js`中导出一个 `EXCEED_LIMIT`的变量，具体方法请参考[专家设置](https://github.com/iwestlin/gd-utils/blob/master/readme.md#%E4%B8%93%E5%AE%B6%E8%AE%BE%E7%BD%AE)
 

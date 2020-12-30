@@ -669,7 +669,7 @@ async function copy_files ({ files, mapping, service_account, root, task_id }) {
     const now = dayjs().format('HH:mm:ss')
     const message = `${now} | 已复制文件数 ${count} | 进行中 ${concurrency} | 排队中文件数 ${files.length}`
     print_progress(message)
-  }, 1000)
+  }, 1000*60*10)
 
   let count = 0
   let concurrency = 0
@@ -802,7 +802,7 @@ async function create_folders ({ source, old_mapping, folders, root, task_id, se
     const now = dayjs().format('HH:mm:ss')
     const message = `${now} | 已创建目录 ${count} | 网络请求 进行中${limit.activeCount}/排队中${limit.pendingCount}`
     print_progress(message)
-  }, 1000)
+  }, 1000*60*1)
 
   while (same_levels.length) {
     const same_levels_missed = same_levels.filter(v => !mapping[v.id])

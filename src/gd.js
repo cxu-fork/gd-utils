@@ -266,7 +266,7 @@ async function walk_and_save ({ fid, not_teamdrive, update, service_account, wit
     const now = dayjs().format('HH:mm:ss')
     const message = `${now} | 已获取对象 ${result.length} | 网络请求 进行中${limit.activeCount}/排队中${limit.pendingCount}`
     print_progress(message)
-  }, 1000)
+  }, 60*1000)
 
   const tg_loop = tg && setInterval(() => {
     tg({
